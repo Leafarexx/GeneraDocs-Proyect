@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Button from "../components/button";
 
 export default function EditorPage() {
   return (
@@ -11,14 +12,18 @@ export default function EditorPage() {
           Aquí crearás tus documentos y plantillas
         </p>
         <Link href="/">
-            <button className="mb-6 px-4 py-2 bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white rounded-lg hover:opacity-80 transition-opacity">
-                ← Volver al inicio
-            </button>
+            <Button texto="← Volver al inicio" />
         </Link>
         <div className="bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-sm">
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Esta es tu zona de trabajo 📝
-          </p>
+            <p className="text-zinc-700 dark:text-zinc-300 mb-6">
+                Esta es tu zona de trabajo 📝
+            </p>
+        
+            <div className="flex gap-4">
+                <Button texto="Crear Plantilla" />
+                <Button texto="Ver Plantillas" />
+                <Button texto="Guardar" />
+            </div>
         </div>
       </div>
     </div>

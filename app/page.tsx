@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Button from "./components/button";
 
 export default function Home() {
   return (
@@ -30,9 +31,7 @@ export default function Home() {
             center.
           </p>
           <Link href="/editor">
-            <button className="mt-4 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:opacity-80 transition-opacity">
-              Ir al Editor →
-            </button>
+            <Button texto="Ir al Editor →" />
           </Link>
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
