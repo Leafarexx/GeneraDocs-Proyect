@@ -26,6 +26,13 @@ export default function EditorPage() {
         setNombre('')
         alert('¡Plantilla guardada!')
     }
+    const eliminarPlantilla = (id) => {
+        const plantilla = plantillas.find(p => p.id === id)
+        if (confirm(`¿Eliminar "${plantilla.nombre}"? Esta acción no se puede deshacer.`)) {
+            setPlantillas(plantillas.filter(p => p.id !== id))
+            alert('Plantilla eliminada correctamente')
+        }
+    }
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black p-8">
@@ -104,8 +111,8 @@ export default function EditorPage() {
             No hay plantillas guardadas. Crea tu primera plantilla arriba.
             </p>
             ) : (
-                <div className="space-y-3">
-                {plantillas.map((plantilla) => (
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {plantillas.map((plantilla) => (
                     <div 
                     key={plantilla.id}
                     className="p-4 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
@@ -114,13 +121,20 @@ export default function EditorPage() {
                         <h3 className="font-semibold text-zinc-900 dark:text-white">
                         {plantilla.nombre}
                         </h3>
-                        <Button 
-                        texto="Cargar"
-                        onClick={() => {
-                            setNombre(plantilla.nombre)
-                            setTexto(plantilla.contenido)
-                        }}
-                        />
+                        <div className="flex gap-2">
+                            <Button 
+                            texto="Cargar"
+                            onClick={() => {
+                                setNombre(plantilla.nombre)
+                                setTexto(plantilla.contenido)
+                            }}
+                            />
+                            <Button 
+                            texto="Eliminar"
+                            onClick={() => eliminarPlantilla(plantilla.id)}
+                            variant="danger"
+                            />
+                        </div>
                     </div>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                         {plantilla.contenido.substring(0, 100)}
