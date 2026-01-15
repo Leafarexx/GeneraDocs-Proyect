@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Button from './Button'
 import { reemplazarVariables } from '../utils/reemplazarVariables'
+import { generarPDF } from '../utils/generarPDF'
 
 
 /**
@@ -163,12 +164,17 @@ export default function PlantillaForm({
           onClick={handleGuardar}
         />
         <Button 
-          texto="Generar Documento" 
+          texto="Descargar PDF" 
           onClick={() => {
+            // Generar documento con variables reemplazadas
             const documentoFinal = reemplazarVariables(texto, variablesPrueba)
-            // Por ahora, solo mostrar en alert
-            // En el futuro: generar PDF
-            alert('Documento generado:\n\n' + documentoFinal)
+            
+            // Nombre del archivo y título del documento
+            const nombrePDF = nombre.trim() || 'documento'
+            const tituloDoc = nombre.trim() || 'Documento Generado'
+            
+            // Generar PDF con formato mejorado
+            generarPDF(documentoFinal, nombrePDF, tituloDoc)
           }}
         />
         <Button 
