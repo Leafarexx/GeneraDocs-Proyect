@@ -35,6 +35,9 @@ export default function EditorPage() {
   // false = no mostrar lista aún (servidor/cliente inicial)
   // true = ya estamos en el cliente, mostrar lista
   const [montado, setMontado] = useState(false)
+  
+  // Estado para búsqueda de plantillas
+  const [busqueda, setBusqueda] = useState('')
 
   // ==========================================
   // EFECTOS - Sincronización con el navegador
@@ -51,24 +54,27 @@ export default function EditorPage() {
   // ==========================================
   
   /**
-    * Guarda una nueva plantilla recibida del formulario
-     * @param nombreForm - Nombre de la plantilla desde el formulario
-    * @param contenidoForm - Contenido de la plantilla desde el formulario
-    */
-    const guardarPlantilla = (nombreForm: string, contenidoForm: string) => {
-    // Crear objeto de la nueva plantilla
-    const nuevaPlantilla = {
-    id: Date.now(),              // ID único usando timestamp
-    nombre: nombreForm,          // Nombre recibido del formulario
-    contenido: contenidoForm     // Contenido recibido del formulario
-    } 
+  * Guarda una nueva plantilla con metadata adicional
+  * 
+  * POR QUÉ agregamos fechaCreacion:
+  * - Permite ordenar por más reciente
+  * - Usuario recuerda cuándo la creó
+  * - Útil para auditoría y tracking
+  * 
+  * @param nombreForm - Nombre de la plantilla
+  * @param contenidoForm - Contenido de la plantilla
+  */
+  const guardarPlantilla = (nombreForm: string, contenidoForm: string) => {
+   const nuevaPlantilla = {
+    id: Date.now(),              // ID único
+    nombre: nombreForm,          // Nombre descriptivo
+    contenido: contenidoForm,    // Texto con variables
+    fechaCreacion: new Date().toISOString()  // Timestamp ISO
+  }
   
-    // Agregar al array de plantillas
-    setPlantillas([...plantillas, nuevaPlantilla])
-  
-    // Feedback al usuario
-    alert('¡Plantilla guardada!')
-    }
+   setPlantillas([...plantillas, nuevaPlantilla])
+   alert('¡Plantilla guardada!')
+}
   
   /**
    * Elimina una plantilla por su ID
@@ -122,12 +128,46 @@ export default function EditorPage() {
 
         {/* ===== LISTA DE PLANTILLAS GUARDADAS ===== */}
         {/* Solo renderiza cuando montado = true (evita error de hidratación) */}
+        
         {montado && (
           <div className="mt-8 bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-sm">
             {/* Header con contador dinámico */}
-            <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-4">
-              Plantillas Guardadas ({plantillas.length})
-            </h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
+                    Plantillas Guardadas ({plantillas.length})
+                </h2>
+            
+                {/* Botón para ordenar por más reciente */}
+                {plantillas.length > 1 && (
+                    <button
+                    onClick={() => {
+                        const ordenadas = [...plantillas].sort((a, b) => {
+                        // Ordenar por fecha de creación (más reciente primero)
+                        const fechaA = new Date(a.fechaCreacion || 0).getTime()
+                        const fechaB = new Date(b.fechaCreacion || 0).getTime()
+                        return fechaB - fechaA  // Descendente (más nuevo primero)
+                        })
+                        setPlantillas(ordenadas)
+                    }}
+                    className="text-sm px-3 py-1 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-md transition-colors"
+                    >
+                    Ordenar por fecha ↓
+                    </button>
+                )}
+            </div>
+            
+            {/* Buscador de plantillas */}
+            {plantillas.length > 2 && (
+                <div className="mb-4">
+                    <input
+                    type="text"
+                    value={busqueda}
+                    onChange={(e) => setBusqueda(e.target.value)}
+                    placeholder="Buscar plantilla por nombre..."
+                    className="w-full p-2 text-sm border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+                    />
+                </div>
+            )}
             
             {/* Renderizado condicional: lista vacía vs con contenido */}
             {plantillas.length === 0 ? (
@@ -138,18 +178,44 @@ export default function EditorPage() {
             ) : (
               // Si hay plantillas, renderizar lista con .map()
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {/* .map() transforma cada plantilla en JSX */}
-                {plantillas.map((plantilla) => (
+                
+                {/* ========================================== */}
+                {/* 🔍 FILTRADO DE BÚSQUEDA - CORREGIDO       */}
+                {/* ========================================== */}
+                {/* 
+                  ANTES: plantillas.map() mostraba TODAS
+                  AHORA: .filter() primero, .map() después
+                  
+                  Flujo:
+                  1. .filter() revisa cada plantilla
+                  2. Si pasa el filtro, la incluye
+                  3. .map() solo trabaja con las filtradas
+                */}
+                {plantillas
+                  .filter((plantilla) => {
+                    // Si no hay búsqueda, mostrar todas
+                    if (busqueda.trim() === '') return true
+                    
+                    // Buscar en el nombre (case-insensitive)
+                    // toLowerCase() hace que "Casa" y "casa" sean iguales
+                    // includes() verifica si contiene el texto
+                    return plantilla.nombre
+                      .toLowerCase()
+                      .includes(busqueda.toLowerCase())
+                  })
+                  .map((plantilla) => (
                   <div 
-                    key={plantilla.id} // Key única requerida por React para performance
-                    className="p-4 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                  >
+                    key={plantilla.id}
+                    className="p-4 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors hover:shadow-md"
+                    title={`Vista previa: ${plantilla.contenido}`}  
+                   >
                     {/* Header de cada plantilla con botones */}
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold text-zinc-900 dark:text-white">
                         {plantilla.nombre}
                       </h3>
                       <div className="flex gap-2">
+                        
                         {/* Botón Cargar: copia datos al editor */}
                         <Button 
                             texto="Cargar"
@@ -158,6 +224,7 @@ export default function EditorPage() {
                                 setContenidoEdicion(plantilla.contenido)  // Carga contenido
                             }}
                         />
+                        
                         {/* Botón Eliminar: variante danger (rojo) */}
                         <Button 
                           texto="Eliminar"
@@ -166,13 +233,17 @@ export default function EditorPage() {
                         />
                       </div>
                     </div>
-                    {/* Preview truncado del contenido */}
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      {/* Mostrar solo primeros 100 caracteres */}
-                      {plantilla.contenido.substring(0, 100)}
-                      {/* Si es más largo, agregar "..." */}
-                      {plantilla.contenido.length > 100 ? '...' : ''}
+
+                    {/* Fecha de creación */}
+                    {plantilla.fechaCreacion && (
+                    <p className="text-xs text-zinc-500 mt-2">
+                        Creada: {new Date(plantilla.fechaCreacion).toLocaleDateString('es-MX', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                        })}
                     </p>
+                    )}
                   </div>
                 ))}
               </div>
