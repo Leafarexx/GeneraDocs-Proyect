@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Button from './Button'
+import { reemplazarVariables } from '../utils/reemplazarVariables'
+
 
 /**
  * Formulario para crear/editar plantillas
@@ -29,11 +31,19 @@ export default function PlantillaForm({
   const [nombre, setNombre] = useState(nombreInicial)
 
   // Actualizar cuando cambien los valores iniciales (para "Cargar")
-useEffect(() => {
-  setNombre(nombreInicial)
-  setTexto(contenidoInicial)
-}, [nombreInicial, contenidoInicial])
+  useEffect(() => {
+    setNombre(nombreInicial)
+    setTexto(contenidoInicial)
+  }, [nombreInicial, contenidoInicial])
 
+  // Estado para almacenar variables de prueba
+  const [variablesPrueba, setVariablesPrueba] = useState<Record<string, string>>({
+    nombre: 'Juan Pérez',
+    empresa: 'Acme Corp',
+    monto: '1000',
+    fecha: '15/01/2026',
+    servicio: 'Consultoría'
+  })
 
   // ==========================================
   // FUNCIONES
@@ -104,23 +114,62 @@ useEffect(() => {
         className="w-full h-48 p-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
       />
     
-      {/* Vista previa */}
+      {/* Vista previa con variables reemplazadas */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
-          Vista previa:
+          Vista previa con variables:
         </h3>
         <div className="p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg min-h-[100px]">
-          <p className="text-zinc-700 dark:text-zinc-300">
-            {texto || 'Escribe algo arriba para ver la vista previa...'}
+          <p className="text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
+            {texto 
+              ? reemplazarVariables(texto, variablesPrueba)
+              : 'Escribe algo arriba para ver la vista previa...'
+            }
           </p>
         </div>
-      </div>
+        
+        {/* Editor de variables de prueba */}
+        {texto && (
+          <div className="mt-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg">
+            <p className="font-semibold text-zinc-900 dark:text-white mb-3">
+              Variables de prueba:
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {Object.entries(variablesPrueba).map(([key, value]) => (
+                <div key={key}>
+                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                    {`{${key}}`}
+                  </label>
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => setVariablesPrueba({
+                      ...variablesPrueba,
+                      [key]: e.target.value
+                    })}
+                    className="w-full p-2 text-sm border border-zinc-300 dark:border-zinc-600 rounded bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+    </div>
       
       {/* Botones */}
       <div className="mt-6 flex gap-4">
         <Button 
           texto="Guardar Plantilla" 
           onClick={handleGuardar}
+        />
+        <Button 
+          texto="Generar Documento" 
+          onClick={() => {
+            const documentoFinal = reemplazarVariables(texto, variablesPrueba)
+            // Por ahora, solo mostrar en alert
+            // En el futuro: generar PDF
+            alert('Documento generado:\n\n' + documentoFinal)
+          }}
         />
         <Button 
           texto="Limpiar" 
