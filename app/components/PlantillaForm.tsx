@@ -32,9 +32,6 @@ export default function PlantillaForm({
   // Nombre de la plantilla
   const [nombre, setNombre] = useState(nombreInicial)
 
-  // ==========================================
-  // ESTADO DE CATEGORÍA - DAY 13
-  // ==========================================
   /**
    * Estado para la categoría seleccionada
    * 
@@ -44,6 +41,13 @@ export default function PlantillaForm({
    * - Reduce fricción en el flujo
    */
   const [categoria, setCategoria] = useState<string>(CATEGORIA_DEFAULT)
+  
+  
+  // Estados de validación
+  const [errores, setErrores] = useState<{
+    nombre?: string
+    contenido?: string
+  }>({})
 
   // Actualizar cuando cambien los valores iniciales (para "Cargar")
   useEffect(() => {
@@ -73,28 +77,36 @@ export default function PlantillaForm({
    */
   
   const handleGuardar = () => {
-  // Validación
-  if (texto.trim() === '' || nombre.trim() === '') {
-    alert('Por favor escribe un nombre y contenido para la plantilla')
+  if (!validarFormulario()) {
     return
   }
-  
-  // ==========================================
-  // LLAMAR onGuardar CON CATEGORÍA - DAY 13
-  // ==========================================
-  /**
-   * Pasamos 3 parámetros al padre:
-   * 1. nombre - String con el nombre de la plantilla
-   * 2. texto - String con el contenido
-   * 3. categoria - String con la categoría seleccionada (NUEVO)
-   */
-
-    onGuardar(nombre, texto, categoria)  // ← AGREGADO categoria
     
-    // Limpiar formulario
+    onGuardar(nombre, texto, categoria)
+    
     setTexto('')
     setNombre('')
-    setCategoria(CATEGORIA_DEFAULT)  // ← AGREGADO: Reset a default
+    setCategoria(CATEGORIA_DEFAULT)
+    setErrores({})
+  }
+
+
+  const validarFormulario = () => {
+    const nuevosErrores: { nombre?: string; contenido?: string } = {}
+    
+    if (!nombre.trim()) {
+      nuevosErrores.nombre = 'El nombre es requerido'
+    } else if (nombre.length > 50) {
+      nuevosErrores.nombre = 'Máximo 50 caracteres'
+    }
+    
+    if (!texto.trim()) {
+      nuevosErrores.contenido = 'El contenido es requerido'
+    } else if (texto.length > 5000) {
+      nuevosErrores.contenido = 'Máximo 5000 caracteres'
+    }
+    
+    setErrores(nuevosErrores)
+    return Object.keys(nuevosErrores).length === 0
   }
 
   /**
@@ -113,16 +125,30 @@ export default function PlantillaForm({
     <div className="bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-sm">
       {/* Input de nombre */}
       <div className="mb-4">
-        <label className="block text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-          Nombre de la plantilla
-        </label>
+        <div className="flex justify-between items-center mb-2">
+          <label className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+            Nombre de la plantilla
+          </label>
+          <span className={`text-sm ${
+            nombre.length > 50 ? 'text-red-500 font-bold' : 'text-zinc-500'
+          }`}>
+            {nombre.length} / 50 caracteres
+          </span>
+        </div>
         <input
           type="text"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           placeholder="Ej: Cotización básica"
-          className="w-full p-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+          className={`w-full p-3 border rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 ${
+            errores.nombre 
+              ? 'border-red-500 focus:ring-red-500' 
+              : 'border-zinc-300 dark:border-zinc-700 focus:ring-black dark:focus:ring-white'
+          }`}
         />
+          {errores.nombre && (
+            <p className="mt-1 text-sm text-red-500">{errores.nombre}</p>
+          )}
       </div>
 
       {/* Selector de Categoría */}
@@ -148,8 +174,10 @@ export default function PlantillaForm({
         <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
           Escribe tu plantilla
         </h2>
-        <span className="text-sm text-zinc-500">
-          {texto.length} caracteres
+        <span className={`text-sm ${
+          texto.length > 5000 ? 'text-red-500 font-bold' : 'text-zinc-500'
+          }`}>
+          {texto.length} / 5000 caracteres
         </span>
       </div>
       
@@ -158,8 +186,17 @@ export default function PlantillaForm({
         value={texto}
         onChange={(e) => setTexto(e.target.value)}
         placeholder="Escribe tu plantilla aquí... Ejemplo: Hola {nombre}, tu cotización es de ${monto}"
-        className="w-full h-48 p-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+        className={`w-full h-48 p-4 border rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-none focus:outline-none focus:ring-2 ${
+          errores.contenido
+            ? 'border-red-500 focus:ring-red-500'
+            : 'border-zinc-300 dark:border-zinc-700 focus:ring-black dark:focus:ring-white'
+          }`}
       />
+        {/* Mensaje de error debajo del text area */} 
+      {errores.contenido && (
+        <p className="mt-1 text-sm text-red-500">{errores.contenido}</p>
+      )}
+
     
       {/* Vista previa con variables reemplazadas */}
       <div className="mt-6">
