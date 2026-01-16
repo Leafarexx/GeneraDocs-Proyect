@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Button from './Button'
 import { reemplazarVariables } from '../utils/reemplazarVariables'
 import { generarPDF } from '../utils/generarPDF'
+import { CATEGORIAS, CATEGORIA_DEFAULT } from '../utils/categorias'
 
 
 /**
@@ -17,7 +18,7 @@ export default function PlantillaForm({
   nombreInicial = '',
   contenidoInicial = ''
 }: { 
-  onGuardar: (nombre: string, contenido: string) => void
+  onGuardar: (nombre: string, contenido: string, categoria: string) => void
   nombreInicial?: string
   contenidoInicial?: string
 }) {
@@ -31,10 +32,24 @@ export default function PlantillaForm({
   // Nombre de la plantilla
   const [nombre, setNombre] = useState(nombreInicial)
 
+  // ==========================================
+  // ESTADO DE CATEGORÍA - DAY 13
+  // ==========================================
+  /**
+   * Estado para la categoría seleccionada
+   * 
+   * POR QUÉ usar CATEGORIA_DEFAULT:
+   * - Siempre hay un valor válido (no puede ser undefined)
+   * - Usuario no tiene que seleccionar siempre (ya está en "Cotización")
+   * - Reduce fricción en el flujo
+   */
+  const [categoria, setCategoria] = useState<string>(CATEGORIA_DEFAULT)
+
   // Actualizar cuando cambien los valores iniciales (para "Cargar")
   useEffect(() => {
-    setNombre(nombreInicial)
-    setTexto(contenidoInicial)
+  setNombre(nombreInicial)
+  setTexto(contenidoInicial)
+  setCategoria(CATEGORIA_DEFAULT)  // ← AGREGADO: Reset a default al cargar plantilla
   }, [nombreInicial, contenidoInicial])
 
   // Estado para almacenar variables de prueba
@@ -46,6 +61,8 @@ export default function PlantillaForm({
     servicio: 'Consultoría'
   })
 
+
+
   // ==========================================
   // FUNCIONES
   // ==========================================
@@ -54,19 +71,30 @@ export default function PlantillaForm({
    * Maneja el guardado del formulario
    * Valida, llama a onGuardar (prop), y limpia campos
    */
+  
   const handleGuardar = () => {
-    // Validación
-    if (texto.trim() === '' || nombre.trim() === '') {
-      alert('Por favor escribe un nombre y contenido para la plantilla')
-      return
-    }
-    
-    // Llamar función del padre con los datos
-    onGuardar(nombre, texto)
+  // Validación
+  if (texto.trim() === '' || nombre.trim() === '') {
+    alert('Por favor escribe un nombre y contenido para la plantilla')
+    return
+  }
+  
+  // ==========================================
+  // LLAMAR onGuardar CON CATEGORÍA - DAY 13
+  // ==========================================
+  /**
+   * Pasamos 3 parámetros al padre:
+   * 1. nombre - String con el nombre de la plantilla
+   * 2. texto - String con el contenido
+   * 3. categoria - String con la categoría seleccionada (NUEVO)
+   */
+
+    onGuardar(nombre, texto, categoria)  // ← AGREGADO categoria
     
     // Limpiar formulario
     setTexto('')
     setNombre('')
+    setCategoria(CATEGORIA_DEFAULT)  // ← AGREGADO: Reset a default
   }
 
   /**
@@ -95,6 +123,24 @@ export default function PlantillaForm({
           placeholder="Ej: Cotización básica"
           className="w-full p-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
         />
+      </div>
+
+      {/* Selector de Categoría */}
+      <div className="mb-4">
+        <label className="block text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+          Categoría
+        </label>
+        <select
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
+          className="w-full p-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+        >
+          {CATEGORIAS.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
       </div>
       
       {/* Header del editor con contador */}

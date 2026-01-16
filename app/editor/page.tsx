@@ -5,6 +5,8 @@ import Link from "next/link";
 import Button from "../components/Button"
 import PlantillaForm from "../components/PlantillaForm";
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { CATEGORIAS } from '../utils/categorias'
+
 
 /**
  * Página del editor de plantillas
@@ -39,6 +41,9 @@ export default function EditorPage() {
   // Estado para búsqueda de plantillas
   const [busqueda, setBusqueda] = useState('')
 
+  // Estado para filtro de categoría
+  const [categoriaFiltro, setCategoriaFiltro] = useState<string>('Todas')
+
   // ==========================================
   // EFECTOS - Sincronización con el navegador
   // ==========================================
@@ -54,27 +59,33 @@ export default function EditorPage() {
   // ==========================================
   
   /**
-  * Guarda una nueva plantilla con metadata adicional
+  * Guarda una nueva plantilla con metadata completa
   * 
-  * POR QUÉ agregamos fechaCreacion:
-  * - Permite ordenar por más reciente
-  * - Usuario recuerda cuándo la creó
-  * - Útil para auditoría y tracking
+  * ARQUITECTURA:
+  * - PlantillaForm captura datos (UI Layer)
+  * - Esta función maneja lógica de negocio (Business Layer)
+  * - useLocalStorage persiste (Data Layer)
   * 
   * @param nombreForm - Nombre de la plantilla
-  * @param contenidoForm - Contenido de la plantilla
+  * @param contenidoForm - Contenido con variables
+  * @param categoriaForm - Categoría seleccionada
   */
-  const guardarPlantilla = (nombreForm: string, contenidoForm: string) => {
+  const guardarPlantilla = (
+    nombreForm: string, 
+    contenidoForm: string,
+    categoriaForm: string
+  ) => {
    const nuevaPlantilla = {
-    id: Date.now(),              // ID único
-    nombre: nombreForm,          // Nombre descriptivo
-    contenido: contenidoForm,    // Texto con variables
-    fechaCreacion: new Date().toISOString()  // Timestamp ISO
-  }
+    id: Date.now(),
+    nombre: nombreForm,
+    contenido: contenidoForm,
+    categoria: categoriaForm,               // ← NUEVO
+    fechaCreacion: new Date().toISOString()
+   }
   
    setPlantillas([...plantillas, nuevaPlantilla])
    alert('¡Plantilla guardada!')
-}
+  }
   
   /**
    * Elimina una plantilla por su ID
@@ -168,6 +179,27 @@ export default function EditorPage() {
                     />
                 </div>
             )}
+
+            {/* Filtro de categoría */}
+            {plantillas.length > 0 && (
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                Filtrar por categoría:
+                </label>
+                <select
+                value={categoriaFiltro}
+                onChange={(e) => setCategoriaFiltro(e.target.value)}
+                className="w-full p-2 text-sm border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+                >
+                <option value="Todas">Todas las categorías</option>
+                {CATEGORIAS.map((cat) => (
+                    <option key={cat} value={cat}>
+                    {cat}
+                    </option>
+                ))}
+                </select>
+            </div>
+            )}
             
             {/* Renderizado condicional: lista vacía vs con contenido */}
             {plantillas.length === 0 ? (
@@ -193,16 +225,21 @@ export default function EditorPage() {
                 */}
                 {plantillas
                   .filter((plantilla) => {
-                    // Si no hay búsqueda, mostrar todas
-                    if (busqueda.trim() === '') return true
+                    // Filtro 1: Búsqueda por nombre
+                    const cumpleBusqueda = busqueda.trim() === '' 
+                        ? true 
+                        : plantilla.nombre.toLowerCase().includes(busqueda.toLowerCase())
                     
-                    // Buscar en el nombre (case-insensitive)
-                    // toLowerCase() hace que "Casa" y "casa" sean iguales
-                    // includes() verifica si contiene el texto
-                    return plantilla.nombre
-                      .toLowerCase()
-                      .includes(busqueda.toLowerCase())
-                  })
+                    // Filtro 2: Categoría (con manejo de plantillas sin categoría)
+                    const cumpleCategoria = categoriaFiltro === 'Todas'
+                        ? true
+                        : (plantilla.categoria || 'Sin categoría') === categoriaFiltro
+                    
+                    // Ambos filtros deben cumplirse
+                    return cumpleBusqueda && cumpleCategoria
+                    })
+                  
+                  
                   .map((plantilla) => (
                   <div 
                     key={plantilla.id}
@@ -214,8 +251,13 @@ export default function EditorPage() {
                       <h3 className="font-semibold text-zinc-900 dark:text-white">
                         {plantilla.nombre}
                       </h3>
+
+                      {/* Badge de categoría */}
+                      <span className="inline-block mt-1 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
+                        {plantilla.categoria || 'Sin categoría'}
+                      </span>
+
                       <div className="flex gap-2">
-                        
                         {/* Botón Cargar: copia datos al editor */}
                         <Button 
                             texto="Cargar"
