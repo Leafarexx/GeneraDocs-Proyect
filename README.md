@@ -1,2 +1,18 @@
 # GeneraDocs-Proyect
-Web application for generating business documents (quotes, contracts, reports) using dynamic templates and variables.  This project is part of my professional IT growth for 2026. It focuses on clean architecture, backend validation, and PDF generation using Next.js and Prisma.
+# Document Generator MVP
+
+Web app to generate business documents (quotes, contracts, reports) using dynamic templates and variables.
+
+## Project goals
+- Reduce time spent creating repetitive documents
+- Provide a simple, template-driven workflow
+- Practice real-world IT and backend development
+
+## Tech stack
+- Next.js
+- Prisma ORM
+- Database (TBD)
+- PDF generation (TBD)
+
+## Status
+🚧 MVP in progress – 2026
