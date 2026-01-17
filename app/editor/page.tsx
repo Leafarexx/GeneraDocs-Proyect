@@ -128,6 +128,21 @@ export default function EditorPage() {
         toast.success('Plantilla eliminada')
     }
   } 
+  const duplicarPlantilla = (id: number) => {
+    const plantilla = plantillas.find(p => p.id === id)
+    
+    if (plantilla) {
+      const copia = {
+        ...plantilla,
+        id: Date.now(),
+        nombre: `${plantilla.nombre} (Copia)`,
+        fechaCreacion: new Date().toISOString()
+      }
+      
+      setPlantillas([...plantillas, copia])
+      toast.success('Plantilla duplicada')
+    }
+  }
 
 
   
@@ -308,6 +323,12 @@ export default function EditorPage() {
                           }}
                         />
 
+                        {/* Botón Duplicar */}
+                        <Button 
+                          texto="Duplicar"
+                          onClick={() => duplicarPlantilla(plantilla.id)}
+                        />
+
                         {/* Botón Eliminar: variante danger (rojo) */}
                         <Button 
                           texto="Eliminar"
@@ -338,3 +359,4 @@ export default function EditorPage() {
     </div>
   )
 }
+
