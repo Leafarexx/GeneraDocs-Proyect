@@ -6,6 +6,7 @@ import Button from "../components/Button"
 import PlantillaForm from "../components/PlantillaForm";
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { CATEGORIAS } from '../utils/categorias'
+import toast from 'react-hot-toast'
 
 
 /**
@@ -27,6 +28,7 @@ export default function EditorPage() {
   // Estados para cargar plantilla en el formulario
   const [nombreEdicion, setNombreEdicion] = useState('')
   const [contenidoEdicion, setContenidoEdicion] = useState('')
+  const [categoriaEdicion, setCategoriaEdicion] = useState('')
   
   // Estado persistente usando custom hook (guarda automáticamente en localStorage)
   // Primer parámetro: clave en localStorage
@@ -54,6 +56,13 @@ export default function EditorPage() {
     setMontado(true) // Ahora sí podemos mostrar la lista
   }, [])
 
+  // Estado para la plantilla que se está editando (ID)
+  const [plantillaEditandoId, setPlantillaEditandoId] = useState<number | null>(null)
+
+
+
+
+
   // ==========================================
   // FUNCIONES - Lógica de negocio
   // ==========================================
@@ -70,23 +79,39 @@ export default function EditorPage() {
   * @param contenidoForm - Contenido con variables
   * @param categoriaForm - Categoría seleccionada
   */
+
+  // Funcion para Modificar guardarPlantilla para Crear O Actualizar
   const guardarPlantilla = (
     nombreForm: string, 
     contenidoForm: string,
     categoriaForm: string
-  ) => {
-   const nuevaPlantilla = {
-    id: Date.now(),
-    nombre: nombreForm,
-    contenido: contenidoForm,
-    categoria: categoriaForm,               // ← NUEVO
-    fechaCreacion: new Date().toISOString()
-   }
+    ) => {
+        if (plantillaEditandoId !== null) {
+            // MODO EDITAR: Actualizar plantilla existente
+            setPlantillas(plantillas.map(p => 
+            p.id === plantillaEditandoId 
+                ? { ...p, nombre: nombreForm, contenido: contenidoForm, categoria: categoriaForm }
+                : p
+            ))
+            toast.success('Plantilla actualizada exitosamente')
+            setPlantillaEditandoId(null)
+        } else {
+        // MODO CREAR: Nueva plantilla
+        const nuevaPlantilla = {
+            id: Date.now(),
+            nombre: nombreForm,
+            contenido: contenidoForm,
+            categoria: categoriaForm,
+            fechaCreacion: new Date().toISOString()
+            }
+            setPlantillas([...plantillas, nuevaPlantilla])
+        }
+        
+        setNombreEdicion('')
+        setContenidoEdicion('')
+    }
   
-   setPlantillas([...plantillas, nuevaPlantilla])
-   alert('¡Plantilla guardada!')
-  }
-  
+
   /**
    * Elimina una plantilla por su ID
    * Pide confirmación antes de eliminar
@@ -94,21 +119,18 @@ export default function EditorPage() {
    * 
    * @param id - ID único de la plantilla a eliminar
    */
-  const eliminarPlantilla = (id) => {
-    // Buscar la plantilla por ID para mostrar su nombre
+  
+  const eliminarPlantilla = (id: number) => {
     const plantilla = plantillas.find(p => p.id === id)
     
-    // Mostrar popup de confirmación con nombre específico
-    if (confirm(`¿Eliminar "${plantilla.nombre}"? Esta acción no se puede deshacer.`)) {
-      // Filtrar array: quedarse con todos EXCEPTO el que tiene este ID
-      // .filter() crea nuevo array (inmutable)
-      setPlantillas(plantillas.filter(p => p.id !== id))
-      
-      // Feedback de confirmación
-      alert('Plantilla eliminada correctamente')
+    if (window.confirm(`¿Eliminar "${plantilla?.nombre}"?`)) {
+        setPlantillas(plantillas.filter(p => p.id !== id))
+        toast.success('Plantilla eliminada')
     }
-    // Si usuario cancela, no hace nada (no entra al if)
-  }
+  } 
+
+
+  
 
   // ==========================================
   // RENDER - Interfaz de usuario
@@ -118,8 +140,8 @@ export default function EditorPage() {
     <div className="min-h-screen bg-zinc-50 dark:bg-black p-8">
       <div className="max-w-4xl mx-auto">
         {/* ===== HEADER ===== */}
-        <h1 className="text-4xl font-bold text-black dark:text-white mb-4">
-          Editor de Plantillas
+        <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">
+            {plantillaEditandoId !== null ? 'Editar Plantilla' : 'Editor de Plantillas'}
         </h1>
         <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-8">
           Aquí crearás tus documentos y plantillas
@@ -129,12 +151,18 @@ export default function EditorPage() {
         <Link href="/">
           <Button texto="← Volver al inicio" />
         </Link>
+
+        {/* Título dinámico */}
+        <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mt-6 mb-8">
+          {plantillaEditandoId !== null ? '✏️ Editando Plantilla' : 'Editor de Plantillas'}
+        </h1>
         
         {/* ===== FORMULARIO DE EDICIÓN ===== */}
         <PlantillaForm 
             onGuardar={guardarPlantilla}
             nombreInicial={nombreEdicion}
             contenidoInicial={contenidoEdicion}
+            categoriaInicial={categoriaEdicion}
         />
 
         {/* ===== LISTA DE PLANTILLAS GUARDADAS ===== */}
@@ -264,9 +292,22 @@ export default function EditorPage() {
                             onClick={() => {
                                 setNombreEdicion(plantilla.nombre)        // Carga nombre
                                 setContenidoEdicion(plantilla.contenido)  // Carga contenido
+                                setCategoriaEdicion(plantilla.categoria || 'Cotización')
+                                setPlantillaEditandoId(null)
                             }}
                         />
                         
+                        {/* Botón Editar: cambia a modo edición */}
+                        <Button 
+                          texto="Editar"
+                          onClick={() => {
+                            setPlantillaEditandoId(plantilla.id)
+                            setNombreEdicion(plantilla.nombre)
+                            setCategoriaEdicion(plantilla.categoria || 'Cotización')
+                            setContenidoEdicion(plantilla.contenido)
+                          }}
+                        />
+
                         {/* Botón Eliminar: variante danger (rojo) */}
                         <Button 
                           texto="Eliminar"

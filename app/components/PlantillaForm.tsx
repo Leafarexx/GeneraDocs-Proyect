@@ -5,6 +5,7 @@ import Button from './Button'
 import { reemplazarVariables } from '../utils/reemplazarVariables'
 import { generarPDF } from '../utils/generarPDF'
 import { CATEGORIAS, CATEGORIA_DEFAULT } from '../utils/categorias'
+import toast from 'react-hot-toast'
 
 
 /**
@@ -16,7 +17,8 @@ import { CATEGORIAS, CATEGORIA_DEFAULT } from '../utils/categorias'
 export default function PlantillaForm({ 
   onGuardar,
   nombreInicial = '',
-  contenidoInicial = ''
+  contenidoInicial = '',
+  categoriaInicial = CATEGORIA_DEFAULT
 }: { 
   onGuardar: (nombre: string, contenido: string, categoria: string) => void
   nombreInicial?: string
@@ -53,7 +55,7 @@ export default function PlantillaForm({
   useEffect(() => {
   setNombre(nombreInicial)
   setTexto(contenidoInicial)
-  setCategoria(CATEGORIA_DEFAULT)  // ← AGREGADO: Reset a default al cargar plantilla
+  setCategoria(categoriaInicial)  // ← AGREGADO: Reset a default al cargar plantilla
   }, [nombreInicial, contenidoInicial])
 
   // Estado para almacenar variables de prueba
@@ -77,11 +79,13 @@ export default function PlantillaForm({
    */
   
   const handleGuardar = () => {
-  if (!validarFormulario()) {
-    return
-  }
+    if (!validarFormulario()) {
+      toast.error('Por favor corrige los errores')
+      return
+    }
     
     onGuardar(nombre, texto, categoria)
+    toast.success('¡Plantilla guardada exitosamente!')
     
     setTexto('')
     setNombre('')
