@@ -143,9 +143,78 @@ export default function EditorPage() {
       toast.success('Plantilla duplicada')
     }
   }
-
-
+  {/*Función exportarPlantillas: permite al usuario exportar todas las plantillas guardadas en un archivo JSON.
+   Crea un Blob con los datos, genera un enlace de descarga y simula un clic para iniciar la descarga.
+   Muestra una notificación de éxito o error según corresponda.*/}
+  const exportarPlantillas = () => {
+    if (plantillas.length === 0) {
+      toast.error('No tienes plantillas guardadas. Crea una primero para hacer backup.')
+      return
+    }
+    
+    const dataStr = JSON.stringify(plantillas, null, 2)
+    const blob = new Blob([dataStr], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `plantillas-backup-${Date.now()}.json`
+    link.click()
+    
+    URL.revokeObjectURL(url)
+    toast.success(
+      `✅ Backup guardado: ${plantillas.length} ${plantillas.length === 1 ? 'plantilla descargada' : 'plantillas descargadas'}`,
+      { duration: 4000 }
+    )
+  }
   
+  {/*Función importarPlantillas: permite al usuario importar plantillas desde un archivo JSON.
+   Lee el archivo, valida su contenido, y actualiza el estado de plantillas si es válido.
+   Muestra notificaciones de éxito o error según corresponda.*/}
+  const importarPlantillas = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    
+    const reader = new FileReader()
+    
+    reader.onload = (e) => {
+      try {
+        const contenido = e.target?.result as string
+        const importadas = JSON.parse(contenido)
+        
+
+        // Debug logs (temporales)
+        console.log('📦 Contenido parseado:', importadas)
+        console.log('📊 Es array:', Array.isArray(importadas))
+        console.log('🔢 Longitud:', importadas.length)
+
+        if (!Array.isArray(importadas)) {
+          toast.error('❌ Archivo incorrecto. Asegúrate de subir un backup válido (.json)')
+          return
+        }
+        
+        if (importadas.length === 0) {
+          toast.error('❌ El archivo está vacío. No contiene plantillas para restaurar.')
+          return
+        }
+        
+        setPlantillas([...plantillas, ...importadas])
+        toast.success(
+          `✅ Backup restaurado: ${importadas.length} ${importadas.length === 1 ? 'plantilla recuperada' : 'plantillas recuperadas'}`,
+          { duration: 4000 }
+        )
+      } catch (error) {
+        toast.error('❌ No se pudo leer el archivo. Verifica que sea un backup válido.')
+      }
+    }
+    
+    reader.readAsText(file)
+    // Limpiar input para permitir re-selección del mismo archivo
+    event.target.value = ''
+  }
+
+
+
 
   // ==========================================
   // RENDER - Interfaz de usuario
@@ -187,6 +256,51 @@ export default function EditorPage() {
           <div className="mt-8 bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-sm">
             {/* Header con contador dinámico */}
             <div className="flex justify-between items-center mb-4">
+                
+                {/* Sección de Backup */}
+                <div className="bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-sm mb-6">
+                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
+                    💾 Copia de Seguridad
+                  </h3>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                    Guarda o recupera todas tus plantillas. El archivo descargado puede importarse después para restaurar tus datos.
+                  </p>
+                  
+                  <div className="flex gap-3 flex-wrap">
+                    {/* Botón Descargar */}
+                    <div>
+                      <Button 
+                        texto="📥 Descargar Backup"
+                        onClick={exportarPlantillas}
+                      />
+                      <p className="text-xs text-zinc-500 mt-1">
+                        Guarda archivo .json con {plantillas.length} {plantillas.length === 1 ? 'plantilla' : 'plantillas'}
+                      </p>
+                    </div>
+                    
+                    {/* Botón Restaurar */}
+                    <div>
+                      <input
+                        type="file"
+                        accept=".json"
+                        onChange={importarPlantillas}
+                        className="hidden"
+                        id="importar-input"
+                      />
+                      <label 
+                        htmlFor="importar-input" 
+                        className="inline-block px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors cursor-pointer"
+                      >
+                        📤 Restaurar Backup
+                      </label>
+                      <p className="text-xs text-zinc-500 mt-1">
+                        Sube un archivo .json para recuperar plantillas
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Título con contador */}
                 <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
                     Plantillas Guardadas ({plantillas.length})
                 </h2>
