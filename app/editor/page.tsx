@@ -7,6 +7,7 @@ import PlantillaForm from "../components/PlantillaForm";
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { CATEGORIAS } from '../utils/categorias'
 import toast from 'react-hot-toast'
+import { PLANTILLAS_BASE } from '../utils/plantillasBase'
 
 
 /**
@@ -35,6 +36,17 @@ export default function EditorPage() {
   // Segundo parámetro: valor inicial (array vacío)
   const [plantillas, setPlantillas] = useLocalStorage('plantillas', [])
   
+  // Cargar plantillas base si es usuario nuevo
+useEffect(() => {
+  if (plantillas.length === 0) {
+    setPlantillas(PLANTILLAS_BASE)
+    toast.success('✨ ¡Bienvenido! Hemos cargado 5 plantillas de ejemplo para ti', {
+      duration: 5000
+    })
+  }
+}, [])
+
+
   // Estado para evitar error de hidratación de Next.js
   // false = no mostrar lista aún (servidor/cliente inicial)
   // true = ya estamos en el cliente, mostrar lista
@@ -182,19 +194,15 @@ export default function EditorPage() {
         const contenido = e.target?.result as string
         const importadas = JSON.parse(contenido)
         
-
-        // Debug logs (temporales)
-        console.log('📦 Contenido parseado:', importadas)
-        console.log('📊 Es array:', Array.isArray(importadas))
-        console.log('🔢 Longitud:', importadas.length)
-
         if (!Array.isArray(importadas)) {
           toast.error('❌ Archivo incorrecto. Asegúrate de subir un backup válido (.json)')
           return
         }
         
         if (importadas.length === 0) {
-          toast.error('❌ El archivo está vacío. No contiene plantillas para restaurar.')
+          setTimeout(() => {
+            toast.error('❌ El archivo está vacío. No contiene plantillas para restaurar.')
+          }, 100)
           return
         }
         
