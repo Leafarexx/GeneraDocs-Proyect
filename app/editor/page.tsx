@@ -20,7 +20,15 @@ export default function EditorPage() {
   const [nombreEdicion, setNombreEdicion] = useState('')
   const [contenidoEdicion, setContenidoEdicion] = useState('')
   const [categoriaEdicion, setCategoriaEdicion] = useState('')
-  const [plantillas, setPlantillas] = useLocalStorage('plantillas', [])
+ 
+  const [plantillas, setPlantillas] = useLocalStorage<{
+    id: number
+    nombre: string
+    contenido: string
+    categoria: string
+    fechaCreacion?: string
+  }[]>('plantillas', [])
+  
   const [montado, setMontado] = useState(false)
   const [busqueda, setBusqueda] = useState('')
   const [categoriaFiltro, setCategoriaFiltro] = useState<string>('Todas')
