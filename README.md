@@ -233,8 +233,8 @@ Durante el desarrollo de este proyecto, dominé:
 
 **Rafael Ibarra**
 
-- GitHub: [@TU_USUARIO](https://github.com/TU_USUARIO)
-- LinkedIn: [Tu LinkedIn](https://linkedin.com/in/TU_PERFIL)
+- GitHub: https://github.com/Leafarexx
+- LinkedIn: https://www.linkedin.com/in/rafael-ibarra-holgu%C3%ADn-9a2064158?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app
 - Email: rafael08dev@gmail.com
 
 ---
