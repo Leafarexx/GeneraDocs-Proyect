@@ -1,25 +1,23 @@
-import Image from "next/image";
-import Link from "next/link";
+import { Header } from "@/components/header"
+import { HeroSection } from "@/components/hero-section"
+import { ProblemSection } from "@/components/problem-section"
+import { SolutionSection } from "@/components/solution-section"
+import { UseCasesSection } from "@/components/use-cases-section"
+import { DemoSection } from "@/components/demo-section"
+import { CTASection } from "@/components/cta-section"
+import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="text-6xl">📄</div>
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Generador de Documentos
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Crea cotizaciones y contratos en minutos
-          </p>
-          <Link href="/editor">
-            <button className="px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors">
-              Ir al Editor →
-            </button>
-          </Link>
-        </div>
-      </main>
-    </div>
-  );
+    <main className="min-h-screen">
+      <Header />
+      <HeroSection />
+      <ProblemSection />
+      <SolutionSection />
+      <UseCasesSection />
+      <DemoSection />
+      <CTASection />
+      <Footer />
+    </main>
+  )
 }
