@@ -23,12 +23,12 @@ export function HeroSection() {
     <section className="py-20 md:py-28 bg-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight min-h-[2.4em] md:min-h-[2.6em] flex items-center justify-center">
-            <span className="inline-flex items-center">
+          <div className="h-[120px] md:h-[140px] lg:h-[160px] flex items-center justify-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight text-center">
               <span>{displayText}</span>
-              <span className="inline-block w-[3px] h-[1em] bg-primary ml-1 animate-pulse" />
-            </span>
-          </h1>
+              <span className="inline-block w-[3px] h-[0.9em] bg-primary ml-1 animate-pulse align-middle" />
+            </h1>
+          </div>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty">
             Crea recibos, constancias y documentos claros en minutos, sin sistemas complicados.
           </p>

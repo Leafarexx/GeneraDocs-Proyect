@@ -66,6 +66,192 @@ export function DemoSection() {
     })
   }
 
+  const generatePDF = () => {
+    const folio = `GD-${Date.now().toString().slice(-6)}`
+    const fechaGeneracion = new Date().toLocaleDateString("es-MX", {
+      day: "2-digit",
+      month: "2-digit", 
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    })
+    
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Recibo - ${formData.nombre}</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            padding: 40px; 
+            background: #fff;
+            color: #1a1a1a;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid #2563eb;
+            border-radius: 12px;
+            overflow: hidden;
+          }
+          .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+          }
+          .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+          }
+          .header p {
+            font-size: 12px;
+            opacity: 0.9;
+          }
+          .folio {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 11px;
+            font-weight: 600;
+          }
+          .body {
+            padding: 30px;
+          }
+          .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+          }
+          .row:last-of-type {
+            border-bottom: none;
+          }
+          .label {
+            color: #6b7280;
+            font-size: 14px;
+          }
+          .value {
+            font-weight: 600;
+            font-size: 14px;
+            text-align: right;
+            max-width: 60%;
+          }
+          .total-section {
+            background: #f8fafc;
+            margin: 20px -30px;
+            padding: 20px 30px;
+            border-top: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+          }
+          .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .total-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+          }
+          .total-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+          }
+          .footer {
+            background: #f9fafb;
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+          }
+          .footer p {
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 4px;
+          }
+          .footer .brand {
+            color: #2563eb;
+            font-weight: 600;
+          }
+          .signature-area {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #d1d5db;
+          }
+          .signature-line {
+            width: 200px;
+            border-bottom: 1px solid #374151;
+            margin: 40px auto 8px;
+          }
+          .signature-text {
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>RECIBO</h1>
+            <p>Comprobante de Pago</p>
+            <div class="folio">Folio: ${folio}</div>
+          </div>
+          
+          <div class="body">
+            <div class="row">
+              <span class="label">Fecha de emision:</span>
+              <span class="value">${formatDate(formData.fecha)}</span>
+            </div>
+            <div class="row">
+              <span class="label">Recibi de:</span>
+              <span class="value">${formData.nombre}</span>
+            </div>
+            <div class="row">
+              <span class="label">Concepto:</span>
+              <span class="value">${formData.servicio}</span>
+            </div>
+            
+            <div class="total-section">
+              <div class="total-row">
+                <span class="total-label">TOTAL RECIBIDO</span>
+                <span class="total-value">${formatCurrency(formData.monto)}</span>
+              </div>
+            </div>
+            
+            <div class="signature-area">
+              <div class="signature-line"></div>
+              <p class="signature-text">Firma de quien recibe</p>
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p>Este documento es valido como comprobante de pago.</p>
+            <p>Generado el ${fechaGeneracion} por <span class="brand">GeneraDocs</span></p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+
+    const printWindow = window.open('', '_blank')
+    if (printWindow) {
+      printWindow.document.write(htmlContent)
+      printWindow.document.close()
+      setTimeout(() => {
+        printWindow.print()
+      }, 250)
+    }
+  }
+
   return (
     <section id="demo" className="py-20 bg-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -208,9 +394,10 @@ export function DemoSection() {
                     <Button
                       variant="outline"
                       className="w-full mt-4 border-primary text-primary hover:bg-primary/10 bg-transparent"
+                      onClick={generatePDF}
                     >
                       <Download className="mr-2 w-4 h-4" />
-                      Descargar documento (demo)
+                      Descargar PDF
                     </Button>
                   </div>
                 ) : (
