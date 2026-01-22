@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 
@@ -14,6 +16,7 @@ export function CTASection() {
               size="lg"
               variant="secondary"
               className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-6 text-lg font-semibold"
+              onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Probar GeneraDocs
               <ArrowRight className="ml-2 w-5 h-5" />

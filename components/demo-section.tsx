@@ -36,6 +36,18 @@ export function DemoSection() {
     }
   }
 
+  const handleReset = () => {
+    setFormData({
+      nombre: "",
+      servicio: "",
+      monto: "",
+      fecha: new Date().toISOString().split("T")[0],
+    })
+    setIsGenerated(false)
+  }
+
+  const hasData = formData.nombre || formData.servicio || formData.monto
+
   const formatCurrency = (value: string) => {
     const num = parseFloat(value)
     if (isNaN(num)) return "$0.00"
@@ -55,7 +67,7 @@ export function DemoSection() {
   }
 
   return (
-    <section className="py-20 bg-background">
+    <section id="demo" className="py-20 bg-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance">
@@ -133,6 +145,16 @@ export function DemoSection() {
                   <FileText className="mr-2 w-5 h-5" />
                   Generar documento
                 </Button>
+                {(hasData || isGenerated) && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleReset}
+                    className="w-full border-border text-muted-foreground hover:bg-muted hover:text-foreground bg-transparent"
+                  >
+                    Probar con otros datos
+                  </Button>
+                )}
               </form>
             </CardContent>
           </Card>

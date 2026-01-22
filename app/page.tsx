@@ -4,6 +4,7 @@ import { ProblemSection } from "@/components/problem-section"
 import { SolutionSection } from "@/components/solution-section"
 import { UseCasesSection } from "@/components/use-cases-section"
 import { DemoSection } from "@/components/demo-section"
+import { WaitlistSection } from "@/components/waitlist-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
 
@@ -16,6 +17,7 @@ export default function Home() {
       <SolutionSection />
       <UseCasesSection />
       <DemoSection />
+      <WaitlistSection />
       <CTASection />
       <Footer />
     </main>
