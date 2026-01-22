@@ -53,7 +53,11 @@ export function WaitlistSection() {
           />
         </div>
 
-        <p className="mt-6 text-xs text-muted-foreground">
+        <p className="mt-6 text-sm text-foreground font-medium">
+          <span className="mr-1">🚀</span> Ya son <span className="text-primary font-bold">47</span> emprendedores esperando
+        </p>
+
+        <p className="mt-3 text-xs text-muted-foreground">
           Sin spam. Solo te avisaremos cuando este listo.
         </p>
       </div>
