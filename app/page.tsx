@@ -1,6 +1,7 @@
 import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
 import { ProblemSection } from "@/components/problem-section"
+import { WhyGeneraDocsSection } from "@/components/why-generadocs-section"
 import { SolutionSection } from "@/components/solution-section"
 import { UseCasesSection } from "@/components/use-cases-section"
 import { DemoSection } from "@/components/demo-section"
@@ -14,6 +15,7 @@ export default function Home() {
       <Header />
       <HeroSection />
       <ProblemSection />
+      <WhyGeneraDocsSection />
       <SolutionSection />
       <UseCasesSection />
       <DemoSection />

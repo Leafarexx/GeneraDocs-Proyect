@@ -11,7 +11,7 @@ export function Header() {
             <img 
               src="/logo-generadocs.png" 
               alt="GeneraDocs" 
-              className="h-9 w-auto"
+              className="h-8 w-auto"
             />
           </a>
           <Button 

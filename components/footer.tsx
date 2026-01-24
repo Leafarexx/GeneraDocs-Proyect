@@ -7,7 +7,7 @@ export function Footer() {
             <img 
               src="/logo-generadocs.png" 
               alt="GeneraDocs" 
-              className="h-8 w-auto"
+              className="h-7 w-auto"
             />
           </a>
           <span className="text-muted-foreground text-sm">
