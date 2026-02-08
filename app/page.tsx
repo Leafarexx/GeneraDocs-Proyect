@@ -1,7 +1,6 @@
 /**
  * Main Landing Page
- * Combines all sections for GeneraDocs MVP
- * Updated with new UseCases section
+ * GeneraDocs - Plataforma de documentos inteligentes
  */
 
 import Hero from '@/components/Hero';
@@ -15,7 +14,7 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-surface-cream">
       <Hero />
       <Problem />
       <Solution />
