@@ -1,7 +1,6 @@
 /**
  * For Who Section Component
- * Clarifies who should (and shouldn't) use GeneraDocs
- * Refined with ultra-minimal design
+ * Clarifica para quien es y para quien no la plataforma
  */
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,27 +8,27 @@ import { Separator } from "@/components/ui/separator"
 
 export default function ForWho() {
   const forYou = [
-    "Das consultas o servicios profesionales",
+    "Ofreces consultas o servicios profesionales",
     "Necesitas recibos, constancias o documentos formales",
-    "No quieres usar sistemas complicados",
-    "Quieres algo rápido, claro y profesional"
+    "Buscas una herramienta simple y directa",
+    "Valoras la imagen profesional en cada entrega"
   ];
 
   const notForYou = [
-    "Facturación fiscal oficial (CFDI)",
-    "Empresas con ERP complejos",
-    "Procesos legales avanzados",
-    "Automatizaciones contables"
+    "Facturacion fiscal oficial (CFDI)",
+    "Empresas con sistemas ERP integrados",
+    "Procesos legales que requieren certificacion",
+    "Automatizaciones contables avanzadas"
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-surface-warm">
       <div className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-6">
           {/* For You */}
-          <Card className="border-gray-200">
+          <Card className="border-ink-200/60">
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold text-gray-900">
+              <CardTitle className="text-xl font-bold text-ink-900">
                 GeneraDocs es para ti si:
               </CardTitle>
             </CardHeader>
@@ -38,7 +37,7 @@ export default function ForWho() {
                 {forYou.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <svg
-                      className="w-5 h-5 text-gray-900 mt-0.5 flex-shrink-0"
+                      className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -48,7 +47,7 @@ export default function ForWho() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-gray-700 text-sm font-light">{item}</span>
+                    <span className="text-ink-600 text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -56,10 +55,10 @@ export default function ForWho() {
           </Card>
 
           {/* Not For You */}
-          <Card className="border-gray-200">
+          <Card className="border-ink-200/60">
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold text-gray-900">
-                GeneraDocs NO es para:
+              <CardTitle className="text-xl font-bold text-ink-900">
+                No esta disenado para:
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -67,7 +66,7 @@ export default function ForWho() {
                 {notForYou.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <svg
-                      className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0"
+                      className="w-5 h-5 text-ink-300 mt-0.5 flex-shrink-0"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -77,13 +76,13 @@ export default function ForWho() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-gray-700 text-sm font-light">{item}</span>
+                    <span className="text-ink-600 text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
               <Separator className="my-4" />
-              <p className="text-sm text-gray-600 font-light italic">
-                GeneraDocs resuelve un problema específico, y lo hace bien.
+              <p className="text-sm text-ink-500 italic">
+                GeneraDocs resuelve un problema especifico, y lo hace bien.
               </p>
             </CardContent>
           </Card>

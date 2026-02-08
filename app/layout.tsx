@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GeneraDocs - Genera documentos profesionales en PDF",
-  description: "Crea recibos, constancias y documentos personalizados en minutos usando plantillas inteligentes.",
+  title: "GeneraDocs - Plataforma de documentos inteligentes",
+  description: "Genera recibos, cotizaciones, constancias y documentos profesionales con plantillas inteligentes. La plataforma que usan profesionistas y negocios en México.",
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },

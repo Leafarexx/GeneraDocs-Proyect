@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * Final CTA Section Component - ACTUALIZADO
- * Cambiado de waitlist a registro directo
+ * Final CTA Section Component
+ * Llamada a la accion con tono de plataforma establecida
  */
 
 import Link from 'next/link';
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 
 export default function FinalCTA() {
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-700 via-primary-800 to-primary-900 relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -28,12 +28,12 @@ export default function FinalCTA() {
 
         {/* Headline */}
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-tight">
-          Empieza a crear documentos profesionales hoy
+          Tu plataforma de documentos profesionales
         </h2>
-        
+
         {/* Subheadline */}
-        <p className="text-lg sm:text-xl text-blue-100 mb-10 max-w-xl mx-auto">
-          Crea tu cuenta gratis y genera tu primer documento en menos de 2 minutos.
+        <p className="text-lg sm:text-xl text-primary-200 mb-10 max-w-xl mx-auto">
+          Crea tu cuenta y genera tu primer documento en menos de 2 minutos. Sin compromisos.
         </p>
 
         {/* CTA Button */}
@@ -41,13 +41,13 @@ export default function FinalCTA() {
           <Button
             variant="default"
             size="xl"
-            className="bg-white text-blue-700 hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all group"
+            className="bg-white text-primary-700 hover:bg-primary-50 shadow-lg hover:shadow-xl transition-all group"
           >
-            Crear cuenta gratis
-            <svg 
-              className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" 
-              fill="none" 
-              stroke="currentColor" 
+            Acceder a la plataforma
+            <svg
+              className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -56,18 +56,18 @@ export default function FinalCTA() {
         </Link>
 
         {/* Trust badges */}
-        <div className="mt-10 flex flex-wrap justify-center gap-6 text-blue-200 text-sm">
+        <div className="mt-10 flex flex-wrap justify-center gap-6 text-primary-300 text-sm">
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <span>Gratis para siempre</span>
+            <span>Plan gratuito incluido</span>
           </div>
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <span>Sin tarjeta de crédito</span>
+            <span>Sin tarjeta de credito</span>
           </div>
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

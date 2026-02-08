@@ -2,8 +2,7 @@
 
 /**
  * Demo Section Component
- * Interactive demo where users can fill a form and see document preview
- * Refined with ultra-minimal design and shadcn/ui components
+ * Demo interactiva de la plataforma con formulario y vista previa
  */
 
 import { useState } from 'react';
@@ -44,7 +43,7 @@ export default function Demo() {
   };
 
   const handleDownload = () => {
-    alert('En la versión completa, aquí se descargaría un PDF real.\n\nEsta es solo una demo para mostrar la funcionalidad.');
+    alert('En la version completa, aqui se descargaria un PDF real.\n\nEsta es solo una demo para mostrar la funcionalidad.');
   };
 
   const resetDemo = () => {
@@ -59,15 +58,15 @@ export default function Demo() {
   };
 
   return (
-    <section id="demo" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 border-y border-gray-100">
+    <section id="demo" className="py-24 px-4 sm:px-6 lg:px-8 bg-surface-warm border-y border-ink-100">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 tracking-tight">
-            Prueba GeneraDocs ahora
+          <h2 className="text-3xl sm:text-4xl font-bold text-ink-900 mb-3 tracking-tight">
+            Prueba la plataforma ahora
           </h2>
-          <p className="text-lg text-gray-600 font-light">
-            Llena el formulario y ve cómo se genera tu documento
+          <p className="text-lg text-ink-500">
+            Llena el formulario y observa como se genera tu documento
           </p>
         </div>
 
@@ -88,7 +87,7 @@ export default function Demo() {
                     value={formData.nombre}
                     onChange={handleChange}
                     required
-                    placeholder="Ej: Ana Martínez"
+                    placeholder="Ej: Ana Martinez"
                   />
                 </div>
 
@@ -101,7 +100,7 @@ export default function Demo() {
                     value={formData.empresa}
                     onChange={handleChange}
                     required
-                    placeholder="Ej: Servicios Profesionales López"
+                    placeholder="Ej: Servicios Profesionales Lopez"
                   />
                 </div>
 
@@ -114,7 +113,7 @@ export default function Demo() {
                     value={formData.servicio}
                     onChange={handleChange}
                     required
-                    placeholder="Ej: Consulta profesional"
+                    placeholder="Ej: Consultoria profesional"
                   />
                 </div>
 
@@ -162,7 +161,7 @@ export default function Demo() {
                     onClick={resetDemo}
                     variant="ghost"
                     size="sm"
-                    className="text-gray-600"
+                    className="text-ink-500"
                   >
                     Reiniciar
                   </Button>
@@ -171,9 +170,9 @@ export default function Demo() {
             </CardHeader>
             <CardContent>
               {!showPreview ? (
-                <div className="border border-dashed border-gray-300 rounded-lg p-12 text-center">
+                <div className="border border-dashed border-ink-200 rounded-lg p-12 text-center">
                   <svg
-                    className="w-12 h-12 text-gray-300 mx-auto mb-3"
+                    className="w-12 h-12 text-ink-200 mx-auto mb-3"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -185,18 +184,18 @@ export default function Demo() {
                       d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
                     />
                   </svg>
-                  <p className="text-sm text-gray-500 font-light">
+                  <p className="text-sm text-ink-400">
                     Llena el formulario para ver tu documento
                   </p>
                 </div>
               ) : (
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <div className="border border-ink-200/60 rounded-lg overflow-hidden">
                   {/* Document Preview */}
                   <div className="bg-white p-8 space-y-6">
                     {/* Header */}
-                    <div className="border-b border-gray-200 pb-4">
-                      <h1 className="text-2xl font-bold text-gray-900 mb-1">RECIBO</h1>
-                      <p className="text-xs text-gray-500">
+                    <div className="border-b border-ink-200 pb-4">
+                      <h1 className="text-2xl font-bold text-ink-900 mb-1">RECIBO</h1>
+                      <p className="text-xs text-ink-400">
                         Fecha: {new Date(formData.fecha).toLocaleDateString('es-MX', {
                           year: 'numeric',
                           month: 'long',
@@ -207,48 +206,48 @@ export default function Demo() {
 
                     {/* Business Info */}
                     <div>
-                      <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
+                      <h2 className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
                         De:
                       </h2>
-                      <p className="text-base font-semibold text-gray-900">{formData.empresa}</p>
+                      <p className="text-base font-semibold text-ink-900">{formData.empresa}</p>
                     </div>
 
                     {/* Client Info */}
                     <div>
-                      <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
+                      <h2 className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
                         Para:
                       </h2>
-                      <p className="text-base font-medium text-gray-900">{formData.nombre}</p>
+                      <p className="text-base font-medium text-ink-900">{formData.nombre}</p>
                     </div>
 
                     {/* Service */}
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                      <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
+                    <div className="bg-surface-warm p-4 rounded-lg border border-ink-100">
+                      <h2 className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
                         Concepto:
                       </h2>
-                      <p className="text-sm text-gray-900">{formData.servicio}</p>
+                      <p className="text-sm text-ink-900">{formData.servicio}</p>
                     </div>
 
                     {/* Amount */}
-                    <div className="border-t border-gray-200 pt-4">
+                    <div className="border-t border-ink-200 pt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-base font-semibold text-gray-900">TOTAL:</span>
-                        <span className="text-xl font-bold text-gray-900">
+                        <span className="text-base font-semibold text-ink-900">TOTAL:</span>
+                        <span className="text-xl font-bold text-ink-900">
                           ${parseFloat(formData.monto).toFixed(2)} MXN
                         </span>
                       </div>
                     </div>
 
                     {/* Footer */}
-                    <div className="text-center pt-4 border-t border-gray-100">
-                      <p className="text-xs text-gray-400 font-light">
+                    <div className="text-center pt-4 border-t border-ink-100">
+                      <p className="text-xs text-ink-400">
                         Documento generado con GeneraDocs
                       </p>
                     </div>
                   </div>
 
                   {/* Download Button */}
-                  <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                  <div className="bg-surface-warm px-6 py-4 border-t border-ink-200/60">
                     <Button
                       onClick={handleDownload}
                       variant="default"
