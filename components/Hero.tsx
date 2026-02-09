@@ -40,6 +40,9 @@ export default function Hero() {
               <a href="#demo" className="text-sm text-ink-500 hover:text-ink-900 transition-colors">
                 Demo
               </a>
+              <Link href="/guia" className="text-sm text-ink-500 hover:text-ink-900 transition-colors">
+                Guia
+              </Link>
             </div>
 
             {/* CTAs */}

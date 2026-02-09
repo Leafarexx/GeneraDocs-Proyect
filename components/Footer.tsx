@@ -51,6 +51,11 @@ export default function Footer() {
                   Iniciar sesion
                 </Link>
               </li>
+              <li>
+                <Link href="/guia" className="text-sm text-ink-500 hover:text-primary-600 transition-colors">
+                  Guia de usuario
+                </Link>
+              </li>
             </ul>
           </div>
 
