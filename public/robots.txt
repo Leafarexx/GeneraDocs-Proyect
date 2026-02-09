@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://generadocs.com.mx/sitemap.xml

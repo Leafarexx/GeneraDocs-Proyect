@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="bg-surface-warm border-t border-ink-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Logo & Description */}
           <div className="md:col-span-2">
             <Link href="/" className="inline-block mb-4">
@@ -54,6 +54,28 @@ export default function Footer() {
               <li>
                 <Link href="/guia" className="text-sm text-ink-500 hover:text-primary-600 transition-colors">
                   Guia de usuario
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Documentos — internal links distribute SEO authority to landing pages */}
+          <div>
+            <h4 className="font-semibold text-ink-900 mb-4">Documentos</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link href="/cotizacion" className="text-sm text-ink-500 hover:text-primary-600 transition-colors">
+                  Cotización profesional
+                </Link>
+              </li>
+              <li>
+                <Link href="/contrato-freelance" className="text-sm text-ink-500 hover:text-primary-600 transition-colors">
+                  Contrato freelance
+                </Link>
+              </li>
+              <li>
+                <Link href="/recibo-honorarios" className="text-sm text-ink-500 hover:text-primary-600 transition-colors">
+                  Recibo de honorarios
                 </Link>
               </li>
             </ul>

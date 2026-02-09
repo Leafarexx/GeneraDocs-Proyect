@@ -194,7 +194,8 @@ export default function Demo() {
                   <div className="bg-white p-8 space-y-6">
                     {/* Header */}
                     <div className="border-b border-ink-200 pb-4">
-                      <h1 className="text-2xl font-bold text-ink-900 mb-1">RECIBO</h1>
+                      {/* SEO: Use p instead of h1 to avoid a second H1 in the DOM */}
+                      <p className="text-2xl font-bold text-ink-900 mb-1">RECIBO</p>
                       <p className="text-xs text-ink-400">
                         Fecha: {new Date(formData.fecha).toLocaleDateString('es-MX', {
                           year: 'numeric',
@@ -206,25 +207,25 @@ export default function Demo() {
 
                     {/* Business Info */}
                     <div>
-                      <h2 className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
+                      <p className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
                         De:
-                      </h2>
+                      </p>
                       <p className="text-base font-semibold text-ink-900">{formData.empresa}</p>
                     </div>
 
                     {/* Client Info */}
                     <div>
-                      <h2 className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
+                      <p className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
                         Para:
-                      </h2>
+                      </p>
                       <p className="text-base font-medium text-ink-900">{formData.nombre}</p>
                     </div>
 
                     {/* Service */}
                     <div className="bg-surface-warm p-4 rounded-lg border border-ink-100">
-                      <h2 className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
+                      <p className="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-1">
                         Concepto:
-                      </h2>
+                      </p>
                       <p className="text-sm text-ink-900">{formData.servicio}</p>
                     </div>
 

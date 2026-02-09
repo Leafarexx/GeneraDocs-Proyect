@@ -3,6 +3,7 @@
  * Muestra perfiles reales de usuarios de la plataforma
  */
 
+import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function UseCases() {
@@ -10,7 +11,8 @@ export default function UseCases() {
     {
       name: "Laura Mendez",
       role: "Nutriologa",
-      description: "Atiende pacientes y necesita generar recibos y planes personalizados despues de cada consulta. Con GeneraDocs, crea documentos profesionales en minutos.",
+      /* Interlink: contextual link to /recibo-honorarios using descriptive anchor text */
+      description: (<>Atiende pacientes y necesita generar un <Link href="/recibo-honorarios" className="text-primary-600 hover:text-primary-700 underline underline-offset-2">recibo de honorarios</Link> despues de cada consulta. Con GeneraDocs, crea documentos profesionales en minutos.</>),
       documents: [
         "Recibo de consulta",
         "Plan de alimentacion"
@@ -24,7 +26,8 @@ export default function UseCases() {
     {
       name: "Carlos Rivera",
       role: "Disenador freelance",
-      description: "Trabaja con multiples clientes y necesita cotizaciones y contratos constantemente. La plataforma le permite generarlos sin rehacerlos cada vez.",
+      /* Interlinks: contextual links to /cotizacion and /contrato-freelance with descriptive anchors */
+      description: (<>Trabaja con multiples clientes y necesita una <Link href="/cotizacion" className="text-primary-600 hover:text-primary-700 underline underline-offset-2">cotización profesional</Link> y un <Link href="/contrato-freelance" className="text-primary-600 hover:text-primary-700 underline underline-offset-2">contrato freelance</Link> para cada proyecto. La plataforma le permite generarlos sin rehacerlos cada vez.</>),
       documents: [
         "Cotizacion de servicios",
         "Contrato de proyecto"

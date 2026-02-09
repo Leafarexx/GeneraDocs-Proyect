@@ -3,8 +3,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: "Guía de Usuario - GeneraDocs",
-  description: "Aprende a usar GeneraDocs para crear documentos profesionales en segundos.",
+  title: "Guía de usuario: cómo crear documentos profesionales con GeneraDocs",
+  description:
+    "Guía paso a paso para usar GeneraDocs. Aprende a crear recibos, cotizaciones, contratos y otros documentos profesionales con plantillas listas para descargar.",
+  alternates: {
+    canonical: "https://generadocs.com.mx/guia",
+  },
 }
 
 export default function GuiaPage() {
