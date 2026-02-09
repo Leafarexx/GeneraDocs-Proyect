@@ -2,7 +2,8 @@
 
 /**
  * Hero Section Component
- * Estilo plataforma SaaS establecida con screenshot del producto
+ * SEO-optimized: H1 contains primary keywords (cotizaciones, contratos, recibos).
+ * Conversion-optimized: clear value prop → subheadline → single primary CTA.
  */
 
 import Image from 'next/image';
@@ -65,33 +66,34 @@ export default function Hero() {
       {/* Hero Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
+          {/* Badge — contains SEO keywords visible above the fold */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100/60 text-primary-700 text-sm font-medium mb-8 animate-fade-in border border-primary-200/40">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
             </span>
-            Plataforma de documentos para profesionales
+            Cotizaciones, contratos y recibos en minutos
           </div>
 
-          {/* Headline */}
+          {/* H1 — single heading with exact-match SEO keywords; gradient highlights document types */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-ink-900 mb-6 tracking-tight leading-[1.1]">
-            Documentos profesionales,{' '}
+            Crea{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400">
-              listos al instante
+              cotizaciones, contratos y recibos
             </span>
+            {' '}profesionales en minutos
           </h1>
 
-          {/* Subheadline */}
-          <p className="text-lg sm:text-xl text-ink-500 mb-8 leading-relaxed max-w-2xl mx-auto">
-            La plataforma que profesionistas y negocios usan para generar recibos, cotizaciones, constancias y mas. Elige una plantilla, llena los datos, descarga tu PDF.
+          {/* Subheadline — reinforces "generar documentos profesionales" keyword + explains value */}
+          <p className="text-lg sm:text-xl text-ink-500 mb-10 leading-relaxed max-w-2xl mx-auto">
+            Genera documentos profesionales sin perder tiempo redactando. Elige una plantilla, completa tus datos y descarga tu archivo al instante.
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          {/* CTAs — primary CTA with clear action verb; mb-10 gives more breathing room before trust text */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <Link href="https://app.generadocs.com.mx/registro">
               <Button variant="primary" size="xl" className="w-full sm:w-auto group">
-                Comenzar ahora
+                Crear documento gratis
                 <svg
                   className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
                   fill="none"
@@ -131,7 +133,7 @@ export default function Hero() {
           <div className="relative rounded-xl overflow-hidden shadow-2xl border border-ink-200/60 bg-white">
             <Image
               src="/screenshots/dashboard.png"
-              alt="Plataforma GeneraDocs"
+              alt="Plataforma GeneraDocs — genera cotizaciones, contratos y recibos profesionales"
               width={1920}
               height={1080}
               className="w-full h-auto"
